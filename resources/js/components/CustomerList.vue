@@ -99,8 +99,8 @@ export default {
     updateCustomer() {
       axios.put(`/customers/${this.editingCustomer.id}`, this.customerForm)
         .then(response => {
-          const index = this.customers.findIndex(customer => customer.id === response.data.id);
-          this.$set(this.customers, index, response.data);
+          // Update the customer in the array directly
+          Object.assign(this.customers.find(c => c.id === response.data.id), response.data);
           this.resetForm();
         });
     },
@@ -136,19 +136,3 @@ export default {
   }
 };
 </script>
-
-<style>
-/* Optional: Hover effect */
-.hover-effect {
-  transition: background-color 0.3s ease;
-}
-
-.hover-effect:hover {
-  background-color: #f3f4f6; /* Adjust as needed */
-}
-
-/* Optional: Styling for modal */
-.modal-open {
-  overflow: hidden;
-}
-</style>
