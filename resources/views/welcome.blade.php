@@ -8,6 +8,9 @@
     <!-- Adding Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
+    <!-- Add favicon -->
+    <link rel="icon" href="path/to/favicon.ico" type="image/x-icon">
+
     @vite(['resources/css/app.css'])
 </head>
 <body>

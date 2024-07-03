@@ -16,7 +16,9 @@
     </form>
     <ul class="space-y-4">
       <li v-for="customer in customers" :key="customer.id" class="border rounded-lg p-4 bg-white shadow-md flex justify-between items-center">
-        <div>
+        <div @mouseenter="setHoveredCustomer(customer.id)" @mouseleave="unsetHoveredCustomer()"
+             @click="showCustomerModal(customer)" 
+             :class="{ 'hover-effect': hoveredCustomer === customer.id }">
           <p class="text-lg font-semibold text-gray-800">{{ customer.first_name }} {{ customer.last_name }}</p>
           <p class="text-gray-600">{{ customer.email }}</p>
           <p class="text-gray-600">{{ customer.contact_number }}</p>
@@ -27,6 +29,27 @@
         </div>
       </li>
     </ul>
+
+    <!-- Modal -->
+    <div v-if="showModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+      <div class="bg-white p-6 max-w-lg mx-auto rounded-lg shadow-lg">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-gray-800">Customer Details</h2>
+          <button @click="closeModal" class="text-gray-600 hover:text-gray-800 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <!-- Modal Body -->
+        <div>
+          <p class="text-lg font-semibold text-gray-800">{{ selectedCustomer.first_name }} {{ selectedCustomer.last_name }}</p>
+          <p class="text-gray-600">{{ selectedCustomer.email }}</p>
+          <p class="text-gray-600">{{ selectedCustomer.contact_number }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -43,7 +66,10 @@ export default {
         email: '',
         contact_number: ''
       },
-      editingCustomer: null
+      editingCustomer: null,
+      showModal: false,
+      selectedCustomer: {},
+      hoveredCustomer: null
     };
   },
   methods: {
@@ -89,6 +115,20 @@ export default {
         contact_number: ''
       };
       this.editingCustomer = null;
+    },
+    showCustomerModal(customer) {
+      this.selectedCustomer = customer;
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+      this.selectedCustomer = {};
+    },
+    setHoveredCustomer(customerId) {
+      this.hoveredCustomer = customerId;
+    },
+    unsetHoveredCustomer() {
+      this.hoveredCustomer = null;
     }
   },
   mounted() {
@@ -96,3 +136,19 @@ export default {
   }
 };
 </script>
+
+<style>
+/* Optional: Hover effect */
+.hover-effect {
+  transition: background-color 0.3s ease;
+}
+
+.hover-effect:hover {
+  background-color: #f3f4f6; /* Adjust as needed */
+}
+
+/* Optional: Styling for modal */
+.modal-open {
+  overflow: hidden;
+}
+</style>
